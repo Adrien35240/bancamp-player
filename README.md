@@ -15,3 +15,5 @@ just press play button 😎
 # Changelog
 ## v0.1
 - a play button form just one song on one specific playlist
+## v0.2
+- play all songs in succession,display title,artist and cover
