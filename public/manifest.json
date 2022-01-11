@@ -2,7 +2,7 @@
  "manifest_version": 2,
  "name": "bandcamp-player",
  "description": "A playlist player for bandcamp.com",
- "version": "0.0.0.1",
+ "version": "0.0.0.2",
  "permissions": ["tabs", "<all_urls>"],
  "browser_action": {  
   "default_popup": "index.html" 
