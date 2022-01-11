@@ -4,8 +4,12 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
+const port = chrome.runtime.connect({ name: 'song' });
+
 playing(id);
 function playing(id) {
+  console.log('id to find', id);
+  let myInterval = null;
   lists = document.querySelectorAll('.collection-item-container');
   lists[id].classList.toggle('playing');
   const btnPlay = lists[id].querySelector('.item_link_play_bkgd');
@@ -19,18 +23,14 @@ function playing(id) {
     img: songImg,
   };
   console.log('result', result);
-  chrome.runtime.sendMessage({ currentSong: result }, (response) => {
-    console.log('response from extension', response.message);
-  });
+  port.postMessage({ currentSong: result });
   const progressBar = document.querySelector('.progress');
-  const myInterval = setInterval(() => {
+  myInterval = setInterval(() => {
     currentProgress = progressBar.getAttribute('style').substring(7, 10);
     console.log('current progress', currentProgress);
     if (currentProgress.toString() === '100') {
       console.log('song end');
-      chrome.runtime.sendMessage({ endSong: 'true' }, (response) => {
-        console.log(response.farewell);
-      }); clearInterval(myInterval);
+      clearInterval(myInterval);
       id += 1;
       playing(id);
     }

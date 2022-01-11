@@ -9,17 +9,14 @@ import './App.css';
 function App() {
   const [playingSongInfos, setPlayingSongInfos] = useState('');
 
-  function listenerInit() {
-    chrome.runtime.onMessage.addListener(
-      (request, sender, sendResponse) => {
-        console.log('sender', sender);
-        console.log('request', request.currentSong);
-        sendResponse({ message: 'song send ok' });
-        setPlayingSongInfos(request.currentSong);
-      },
-    );
+  function createListener() {
+    chrome.runtime.onConnect.addListener((port) => {
+      console.assert(port.name === 'song');
+      port.onMessage.addListener((data) => {
+        setPlayingSongInfos(data.currentSong);
+      });
+    });
   }
-
   async function getCurrentTab() {
     const queryOptions = { active: true, currentWindow: true };
     await chrome.tabs.query(queryOptions, (tab) => {
@@ -28,12 +25,11 @@ function App() {
     });
   }
   function init() {
+    createListener();
     const tab = getCurrentTab();
-    listenerInit();
     chrome.tabs.executeScript(tab.id, { code: 'let id = 0' }, () => {
       chrome.tabs.executeScript(tab.id, { file: './init.js' }, (resultInit) => {
         console.log('script init send', resultInit);
-        listenerInit();
         chrome.tabs.executeScript(tab.id, { file: './playing.js' }, (resultPlaying) => {
           console.log('script playing send', resultPlaying);
         });
