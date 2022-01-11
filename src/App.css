@@ -1,9 +1,9 @@
 .playBtn{
   font-size:4rem;
-  background-color:grey
+  background:linear-gradient(135deg, #816FF7 0%, #30D4BB 100%);
 }
 .playBtn:hover{
-  background-color:red
+  background:linear-gradient(135deg, #30D4BB 0%,#816FF7  100%)
 }
 .img-current-song{
 width:100px;
