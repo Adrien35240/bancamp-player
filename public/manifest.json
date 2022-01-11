@@ -1,8 +1,8 @@
 {
  "manifest_version": 2,
- "name": "template-react-chrome-extension",
- "description": "a empty template for chrome extension with react",
- "version": "1.0",
+ "name": "bandcamp-player",
+ "description": "A playlist player for bandcamp.com",
+ "version": "0.0.0.1",
  "permissions": ["tabs", "<all_urls>"],
  "browser_action": {  
   "default_popup": "index.html" 
