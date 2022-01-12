@@ -13,22 +13,22 @@ function App() {
     chrome.runtime.onConnect.addListener((port) => {
       console.assert(port.name === 'song');
       port.onMessage.addListener((data) => {
-  console.log('current song',data.currentSong)
+        console.log('current song', data.currentSong);
         setCurrentSong(data.currentSong);
       });
     });
   }
   async function getCurrentTab() {
-  let queryOptions = { active: true, currentWindow: true };
-  let [tab] = await chrome.tabs.query(queryOptions);
-  return tab;
-}
+    const queryOptions = { active: true, currentWindow: true };
+    const [tab] = await chrome.tabs.query(queryOptions);
+    return tab;
+  }
   async function init() {
     createListener();
-    const tab = await getCurrentTab()
-    console.log('current tab ',tab.id)
-    chrome.scripting.executeScript({target:{tabId:tab.id},files:['js/content.js']},(result)=>{
-    console.log('script send',result)
+    const tab = await getCurrentTab();
+    console.log('current tab ', tab.id);
+    chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['js/content.js'] }, (result) => {
+      console.log('script send', result);
     });
   }
 
