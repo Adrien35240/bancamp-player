@@ -5,12 +5,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 const port = chrome.runtime.connect({ name: 'song' });
-
+let lists = document.querySelectorAll('.collection-item-container');
+  let id = 0
 playing(id);
 function playing(id) {
   console.log('id to find', id);
   let myInterval = null;
-  lists = document.querySelectorAll('.collection-item-container');
   lists[id].classList.toggle('playing');
   const btnPlay = lists[id].querySelector('.item_link_play_bkgd');
   btnPlay.click();

@@ -7,33 +7,28 @@ import React, { useState } from 'react';
 import './App.css';
 
 function App() {
-  const [playingSongInfos, setPlayingSongInfos] = useState('');
+  const [currentSong, setCurrentSong] = useState('');
 
   function createListener() {
     chrome.runtime.onConnect.addListener((port) => {
       console.assert(port.name === 'song');
       port.onMessage.addListener((data) => {
-        setPlayingSongInfos(data.currentSong);
+  console.log('current song',data.currentSong)
+        setCurrentSong(data.currentSong);
       });
     });
   }
   async function getCurrentTab() {
-    const queryOptions = { active: true, currentWindow: true };
-    await chrome.tabs.query(queryOptions, (tab) => {
-      console.log('tab query');
-      return tab;
-    });
-  }
-  function init() {
+  let queryOptions = { active: true, currentWindow: true };
+  let [tab] = await chrome.tabs.query(queryOptions);
+  return tab;
+}
+  async function init() {
     createListener();
-    const tab = getCurrentTab();
-    chrome.tabs.executeScript(tab.id, { code: 'let id = 0' }, () => {
-      chrome.tabs.executeScript(tab.id, { file: './init.js' }, (resultInit) => {
-        console.log('script init send', resultInit);
-        chrome.tabs.executeScript(tab.id, { file: './playing.js' }, (resultPlaying) => {
-          console.log('script playing send', resultPlaying);
-        });
-      });
+    const tab = await getCurrentTab()
+    console.log('current tab ',tab.id)
+    chrome.scripting.executeScript({target:{tabId:tab.id},files:['js/content.js']},(result)=>{
+    console.log('script send',result)
     });
   }
 
@@ -42,11 +37,11 @@ function App() {
       <header className="App-header">
         <div className="playBtn" onClick={init}>Play</div>
         <div className="songPlaying">
-          {playingSongInfos.title}
+          {currentSong.title}
           {' '}
-          {playingSongInfos.artiste}
+          {currentSong.artiste}
         </div>
-        <img className="img-current-song" src={playingSongInfos.img} alt="no-img" />
+        <img className="img-current-song" src={currentSong.img} alt="no-img" />
       </header>
     </div>
   );

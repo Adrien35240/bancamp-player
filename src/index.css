@@ -5,8 +5,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  width: 200px;
- height: 200px;
+  height:200px;
+  width:200px
 }
 
 code {
