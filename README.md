@@ -17,3 +17,6 @@ just press play button 😎
 - a play button form just one song on one specific playlist
 ## v0.2
 - play all songs in succession,display title,artist and cover
+## v0.3
+- persist data even if extension close or tab not-active 
+
