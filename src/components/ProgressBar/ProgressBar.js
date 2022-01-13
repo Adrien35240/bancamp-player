@@ -11,22 +11,25 @@ import React from 'react';
 
 function ProgressBar({ progress }) {
 
-
+if(!progress){
+  progress = 0
+}
   const containerStyles = {
-    height: 20,
-    width: '100px',
+    height: '14px',
+    width: '100%',
     backgroundColor: "#e0e0de",
   }
 
   const fillerStyles = {
     height: '14px',
     width: `${progress}%`,
-    backgroundColor: "blue",
+    backgroundColor: "rgba(50, 50, 50, 1)",
     textAlign: 'left'
   }
 
   const labelStyles = {
-    padding: 5,
+    color:'white',
+    padding: '2px',
     color: 'white',
     fontWeight: 'bold'
   }
