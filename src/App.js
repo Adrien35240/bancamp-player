@@ -1,9 +1,3 @@
-/* eslint-disable import/extensions */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable react/jsx-filename-extension */
 /* eslint-disable no-undef */
 import React, { useState, useEffect } from 'react';
 import ProgressBar from './components/ProgressBar/ProgressBar.js';
@@ -28,24 +22,25 @@ function App() {
   }
 
   async function play() {
-      const tab =  getCurrentTab().then((tab)=>{
+      const tab = await getCurrentTab()
            chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['js/content.js'] }, (result) => {
     })
-   });
-    }
+   };
+    
 
   return (
     <div className="App">
       <header className="App-header">
-        <div>
-          <div className="controls-player" ><img className='prev-icon' src={prevIcon} alt='play icon'/>
+        <div className="header-container">
+          <div className="controls-player" >
+            <img className='prev-icon' src={prevIcon} alt='play icon' onClick={prev}/>
             <img className='play-icon' src={playIcon} alt='play icon' onClick={play}/>
-            <img className='pause-icon' src={pauseIcon} alt='play icon'/>
-            <img className='next-icon' src={nextIcon} alt='play icon'/>
+            <img className='pause-icon' src={pauseIcon} alt='play icon' onClick={pause}/>
+            <img className='next-icon' src={nextIcon} alt='play icon' onClick={next}/>
           </div>
-              <div className="songPlaying">
-            {currentSong.title}
-            {currentSong.artiste}
+              <div className="song-playing">
+                <div> {currentSong.title}</div>
+                <div>{currentSong.artiste}</div>
           </div>
             <ProgressBar progress={currentSong.currentProgress} />
           </div>
