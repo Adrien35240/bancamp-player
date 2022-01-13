@@ -17,15 +17,15 @@ function playing(listId) {
   const songTitle = lists[listId].querySelector('.collection-item-title').innerText;
   const songArtiste = lists[listId].querySelector('.collection-item-artist').innerText;
   const songImg = lists[listId].querySelector('.collection-item-art').getAttribute('src');
-  let result = {
+  const result = {
     title: songTitle,
     artiste: songArtiste,
     img: songImg,
   };
   const progressBar = document.querySelector('.progress');
   myInterval = setInterval(() => {
-    currentProgress = progressBar.getAttribute('style').substring(7, 10);
-    result.currentProgress = currentProgress;
+    currentProgress = progressBar.getAttribute('style').substring(7, 10)
+    result.currentProgress = Number(currentProgress);
     chrome.runtime.sendMessage({ currentSong: result });
     console.log('current song ', result);
     if (currentProgress.toString() === '100') {

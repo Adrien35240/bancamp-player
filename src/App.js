@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -5,6 +6,7 @@
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable no-undef */
 import React, { useState, useEffect } from 'react';
+import ProgressBar from './components/ProgressBar/ProgressBar.js';
 import './App.css';
 
 function App() {
@@ -20,6 +22,7 @@ function App() {
     const [tab] = await chrome.tabs.query(queryOptions);
     return tab;
   }
+
   async function init() {
     const tab = await getCurrentTab();
     chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['js/content.js'] }, (result) => {
@@ -36,6 +39,7 @@ function App() {
           {currentSong.artiste}
         </div>
         <img className="img-current-song" src={currentSong.img} alt="no-img" />
+        <ProgressBar progress={currentSong.currentProgress} />
       </header>
     </div>
   );
