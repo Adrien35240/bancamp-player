@@ -4,35 +4,35 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-const port = chrome.runtime.connect({ name: 'song' });
-let lists = document.querySelectorAll('.collection-item-container');
-  let id = 0
+const displayTheWholeList = document.querySelector('.show-more');
+displayTheWholeList.click();
+const lists = document.querySelectorAll('.collection-item-container');
+let id = 0;
 playing(id);
-function playing(id) {
-  console.log('id to find', id);
+function playing(listId) {
   let myInterval = null;
-  lists[id].classList.toggle('playing');
-  const btnPlay = lists[id].querySelector('.item_link_play_bkgd');
+  lists[listId].classList.toggle('playing');
+  const btnPlay = lists[listId].querySelector('.item_link_play_bkgd');
   btnPlay.click();
-  const songTitle = lists[id].querySelector('.collection-item-title').innerText;
-  const songArtiste = lists[id].querySelector('.collection-item-artist').innerText;
-  const songImg = lists[id].querySelector('.collection-item-art').getAttribute('src');
-  const result = {
+  const songTitle = lists[listId].querySelector('.collection-item-title').innerText;
+  const songArtiste = lists[listId].querySelector('.collection-item-artist').innerText;
+  const songImg = lists[listId].querySelector('.collection-item-art').getAttribute('src');
+  let result = {
     title: songTitle,
     artiste: songArtiste,
     img: songImg,
   };
-  console.log('result', result);
-  port.postMessage({ currentSong: result });
   const progressBar = document.querySelector('.progress');
   myInterval = setInterval(() => {
     currentProgress = progressBar.getAttribute('style').substring(7, 10);
-    console.log('current progress', currentProgress);
+    result.currentProgress = currentProgress;
+    chrome.runtime.sendMessage({ currentSong: result });
+    console.log('current song ', result);
     if (currentProgress.toString() === '100') {
       console.log('song end');
       clearInterval(myInterval);
       id += 1;
       playing(id);
     }
-  }, 2000);
+  }, 500);
 }
