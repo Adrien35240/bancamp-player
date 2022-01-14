@@ -47,15 +47,35 @@
 //     }
 //   }, 500);
 // }
-
+let lists = null
 console.log('hello content script')
-chrome.runtime.onConnect.addListener(function (port) {
-  console.assert(port.name === "knockknock");
+const port = chrome.runtime.onConnect.addListener((port)=>{
+    console.assert(port.name === "bandcamp-port")
   console.log('port.name', port.name)
   port.onMessage.addListener(function (msg) {
-    if (msg.msgBg === "hello c'est le bg") {
+    if (msg.msgBg === "connection request") {
       console.log(msg.msgBg)
-      port.postMessage({ msgCs: "bonjour bg,j ai bien recu ton message" })
+      port.postMessage({ msgCs: "port connected" })
     }
   })
+  port.onMessage.addListener(function (msg) {
+  if (msg.lists === "listsRequest") {
+  lists = document.querySelectorAll('.collection-item-container');
+    console.log(lists)
+    let result = []
+    for (let song of lists) {
+   const songTitle = song.querySelector('.collection-item-title').innerText;
+  const songArtiste = song.querySelector('.collection-item-artist').innerText;
+  const songImg = song.querySelector('.collection-item-art').getAttribute('src');
+      const currentSong = { songTitle, songArtiste, songImg }
+      console.log('currentSong',currentSong)
+      result.push(currentSong)
+    }
+    console.log('result',result)
+    port.postMessage({ lists: result })
+  }
+  })
+  
 })
+
+

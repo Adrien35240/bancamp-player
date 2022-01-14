@@ -9,8 +9,20 @@ import './App.css';
 
 function App() {
 
-  const [currentSong, setCurrentSong] = useState('');
-
+const [currentSong, setCurrentSong] = useState('');
+  // send initPopup msg to sw when extension open
+  chrome.runtime.sendMessage({ msgPp: "initPopup" })
+  chrome.runtime.onMessage.addListener(function (msg) {
+    if (msg.msgBg === "init ok") {
+      console.log(msg.msgBg)
+    }
+  })
+  chrome.runtime.sendMessage({ msgPp: "listsRequest" })
+  chrome.runtime.onMessage.addListener(function (msg) {
+    if (msg.msgBg === "list demandée") {
+      console.log(msg.msgBg)
+    }
+  })
  useEffect(() => {
    //chrome.runtime.onMessage.addListener((request, sender, reply) => {
        //setCurrentSong(request.currentSong);
