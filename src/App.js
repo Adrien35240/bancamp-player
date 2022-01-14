@@ -8,26 +8,34 @@ import nextIcon from './assets/icons/nextIcon.png'
 import './App.css';
 
 function App() {
+
   const [currentSong, setCurrentSong] = useState('');
+
  useEffect(() => {
-     chrome.runtime.onMessage.addListener((request, sender, reply) => {
-      setCurrentSong(request.currentSong);
-    });
+   //chrome.runtime.onMessage.addListener((request, sender, reply) => {
+       //setCurrentSong(request.currentSong);
+     //});
   });
 
   async function getCurrentTab() {
-    const queryOptions = { active: true, currentWindow: true };
-    const [tab] = await chrome.tabs.query(queryOptions);
-    return tab;
+     const queryOptions = { active: true, currentWindow: true };
+     const [tab] = await chrome.tabs.query(queryOptions);
+     return tab;
   }
-
   async function play() {
-      const tab = await getCurrentTab()
-           chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['js/content.js'] }, (result) => {
-    })
-   };
-    
-
+      // const tab = await getCurrentTab()
+      // chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['js/content.js'] })
+  }
+    function prev(){
+    // port.postMessage({control: "prev"})
+   } 
+   function pause(){
+      //   port.postMessage({ control: "next"  });
+  }
+    function next(){
+//    port.postMessage({msg: "hello" })
+  }
+  
   return (
     <div className="App">
       <header className="App-header">
