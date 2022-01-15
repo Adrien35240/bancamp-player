@@ -3,22 +3,37 @@ const cs = {
   list:[],
   init() {
     console.log('contentScript loaded')
-    this.sendList()
+    this.listener()
   },
-  sendList() {
+  /**
+  * Send attributs from all songs in DOM to SW
+  * @returns {boolean} 
+  */
+  getList() {
+    this.list = []
     //get list of element
     const buff = document.querySelectorAll('.collection-item-container');
+    //get attributs from songs Element
     for (let el of buff) {
       const songTitle = el.querySelector('.collection-item-title').innerText;
       const songArtiste = el.querySelector('.collection-item-artist').innerText;
       const songImg = el.querySelector('.collection-item-art').getAttribute('src');
-      this.list.push({songTitle,songArtiste,songImg})
+      //add to global list array
+      this.list.push({ songTitle, songArtiste, songImg })
     }
-    console.log('list :',this.list)
-    chrome.runtime.sendMessage({ status: "sendList", list: this.list}, (res) => {
-      console.log('send list status :', res.status);
-      return true
-    });
+  },
+  listener() {
+    chrome.runtime.onMessage.addListener(
+    (req, send, res) => {
+        if (req.status === "loading") {   
+          this.getList()
+          console.log('cs: list :',this.list)
+          res({ status: "list received...", list: this.list })     
+        } else {
+          res({ status: "error sending list to SW" })
+        }
+      }
+    );
   }
 }
 
