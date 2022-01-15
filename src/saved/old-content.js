@@ -1,28 +1,10 @@
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-plusplus */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-const cs = {
-  list:[],
-  init() {
-    console.log('contentScript loaded')
-    this.sendList()
-  },
-  sendList() {
-    //get list of element
-    const buff = document.querySelectorAll('.collection-item-container');
-    for (let el of buff) {
-      const songTitle = el.querySelector('.collection-item-title').innerText;
-      const songArtiste = el.querySelector('.collection-item-artist').innerText;
-      const songImg = el.querySelector('.collection-item-art').getAttribute('src');
-      this.list.push({songTitle,songArtiste,songImg})
-    }
-    console.log('list :',this.list)
-    chrome.runtime.sendMessage({ status: "sendList", list: this.list}, (res) => {
-      console.log('send list status :', res.status);
-      return true
-    });
-  }
-}
-
-cs.init()
+// controle received
 
 // chrome.runtime.onConnect.addListener(function(port) {
 //   console.assert(port.name === "bandcamp-player");
@@ -65,3 +47,34 @@ cs.init()
 //     }
 //   }, 500);
 // }
+let lists = null
+console.log('hello content script')
+const port = chrome.runtime.onConnect.addListener((port) => {
+    console.assert(port.name === "bandcamp-port")
+    console.log('port.name', port.name)
+    port.onMessage.addListener(function (msg) {
+        if (msg.msgBg === "connection request") {
+            console.log(msg.msgBg)
+            port.postMessage({ msgCs: "port connected" })
+        }
+    })
+    port.onMessage.addListener(function (msg) {
+        if (msg.lists === "listsRequest") {
+            lists = document.querySelectorAll('.collection-item-container');
+            console.log(lists)
+            let result = []
+            for (let song of lists) {
+                const songTitle = song.querySelector('.collection-item-title').innerText;
+                const songArtiste = song.querySelector('.collection-item-artist').innerText;
+                const songImg = song.querySelector('.collection-item-art').getAttribute('src');
+                const currentSong = { songTitle, songArtiste, songImg }
+                console.log('currentSong', currentSong)
+                result.push(currentSong)
+            }
+            console.log('result', result)
+            port.postMessage({ lists: result })
+        }
+    })
+
+})
+
