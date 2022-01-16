@@ -51,7 +51,8 @@ function App() {
  }
   
  async function play(e) {
-    e.preventDefault()
+   e.preventDefault()
+   //TODO: toggle le bouton play/pause
     const tab = await getTab()
     console.log('play')
     chrome.tabs.sendMessage(tab.id,{ status: "playing", index:index.current }, (res) => {
@@ -60,7 +61,9 @@ function App() {
       }
     })
   }
+  async function prev(e) {
 
+}
   
   return (
     <div className="App">
