@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Playlist from './components/Playlist/Playlist'
 import ProgressBar from './components/ProgressBar/ProgressBar.js';
 import prevIcon from './assets/icons/prevIcon.png'
@@ -9,16 +9,15 @@ import nextIcon from './assets/icons/nextIcon.png'
 import './App.css';
 
 function App() {
-  let currentSongBuff = []
+  const songs = useRef(null)
   const [currentSong, setCurrentSong] = useState([]);
 
   function getList() {
     return new Promise((resolve,reject) => {
        chrome.runtime.sendMessage({ status: "loading" },(res) => {
         if (res.status === 'list sending end...') {
-              console.log("ext:",res.status)
+              console.log("ext:",res)
               console.log('ext: list :', res.list[0])
-              //currentSongBuff = res.list[0]
               resolve(res) 
             }
        })
@@ -26,12 +25,17 @@ function App() {
     })
   }
 
-   getList().then((data) => {
-     console.log('ext: data :', data)
-  //   setCurrentSong(currentSongBuff)
-  //   console.log('ext currentSong :',currentSong)
-   })
+   
  
+  useEffect(() => {
+    getList().then((data) => {
+     console.log('ext: data :', data)
+     songs.current =  data.list
+     console.log('ext songs useRef :', songs.current)
+   setCurrentSong(songs.current[0])
+      console.log('ext: currentSong :', currentSong)
+    })
+  },[])
 
 
   return (
@@ -45,13 +49,13 @@ function App() {
             <img className='next-icon' src={nextIcon} alt='play icon'/>
           </div>
               <div className="song-playing">
-                <div> {currentSong.title}</div>
-                <div>{currentSong.artiste}</div>
+            <div> {currentSong.songTitle}</div>
+            <div>{currentSong.songArtiste}</div>
           </div>
             {/* <ProgressBar progress={currentSong.currentProgress} /> */}
           </div>
        </header>
-      <img className="img-current-song" src={currentSong.img} alt="no-img" />
+      <img className="img-current-song" src={currentSong.songImg} alt="no-img" />
       <div>
         <div className='playlist-button' >Playlist</div>
           <div className='playlist-list'><Playlist /></div>
