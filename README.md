@@ -15,11 +15,14 @@ npm install && npm run build
 
 
 # Changelog
-## v0.1
-- a play button form just one song on one specific playlist
-## v0.2
-- play all songs in succession,display title,artist and cover
-## v0.3
-- persist data even if extension close or tab not-active 
-## v0.4
-- progress bar
+## v1.0
+### features:
+* [x] current song info display
+* [x] control buttons
+* [x] progress bar
+* [ ] Design
+## v2.0
+### features:
+* [ ] playlist
+* [ ] volume button
+* [ ] random button

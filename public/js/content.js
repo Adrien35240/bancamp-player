@@ -13,14 +13,11 @@ const cs = {
 
   getList() {
     this.list = []
-    //get list of element
     this.listElement = document.querySelectorAll('.collection-item-container');
-    //get attributs from songs Element
     for (let el of this.listElement) {
       const songTitle = el.querySelector('.collection-item-title').innerText;
       const songArtiste = el.querySelector('.collection-item-artist').innerText;
       const songImg = el.querySelector('.collection-item-art').getAttribute('src');
-      //add to global list array
       this.list.push({ songTitle, songArtiste, songImg })
     }
   },
@@ -40,13 +37,34 @@ const cs = {
         this.playing()
         res({ status: 'playing start ...'})
       }
+      if (req.status === 'prevSong') {
+        if (this.index > 0) {
+          this.index--
+          this.playing()
+        res({ status: 'playing start ...' })
+        } else {
+          this.index = this.list.length-1
+          this.playing()
+          res({ status: 'playing start ...' })
+        }
+      }
+      if (req.status === 'nextSong') {
+       if (this.index < this.list.length-1) {
+          this.index++
+          this.playing()
+        res({ status: 'playing start ...' })
+       } else {
+         this.index = 0
+         this.playing()
+         res({status: 'playing start ...'})
+        }
+      }
     })
   },
   playing() {
     this.listElement[this.index].classList.toggle('playing');
-    const btnPlay = this.listElement[this.index].querySelector('.item_link_play_bkgd');
-    btnPlay.click();
-    //this.sendNewSong()
+    const btnCurrentSong = this.listElement[this.index].querySelector('.item_link_play_bkgd');
+    btnCurrentSong.click();
     this.progressBar()
   },
   progressBar() {
@@ -63,14 +81,6 @@ const cs = {
     }
   }, 500);
   },
-  // sendNexSong() {
-  //   //send this.list[index]
-  //   chrome.runtime.sendMessage({ status: "new song", list: this.list[this.index], index: this.index }, (res)=>{
-      
-  //   })
-
-  // }
-
 }
 
 cs.init()
