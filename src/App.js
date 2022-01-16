@@ -12,12 +12,19 @@ function App() {
   const songs = useRef(null)
   const [currentSong, setCurrentSong] = useState([]);
 
-  function getList() {
+ useEffect(() => {
+    getList().then((data) => {
+      songs.current =  data.list
+      console.log('ext: songs :', songs.current)
+      setCurrentSong(songs.current[0])
+    })
+  },[])
+
+ function getList() {
     return new Promise((resolve,reject) => {
        chrome.runtime.sendMessage({ status: "loading" },(res) => {
         if (res.status === 'list sending end...') {
               console.log("ext:",res)
-              console.log('ext: list :', res.list[0])
               resolve(res) 
             }
        })
@@ -25,19 +32,7 @@ function App() {
     })
   }
 
-   
- 
-  useEffect(() => {
-    getList().then((data) => {
-     console.log('ext: data :', data)
-     songs.current =  data.list
-     console.log('ext songs useRef :', songs.current)
-   setCurrentSong(songs.current[0])
-      console.log('ext: currentSong :', currentSong)
-    })
-  },[])
-
-
+  
   return (
     <div className="App">
       <header className="App-header">
