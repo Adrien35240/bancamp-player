@@ -46,6 +46,7 @@ const cs = {
     this.listElement[this.index].classList.toggle('playing');
     const btnPlay = this.listElement[this.index].querySelector('.item_link_play_bkgd');
     btnPlay.click();
+    //this.sendNewSong()
     this.progressBar()
   },
   progressBar() {
@@ -53,7 +54,7 @@ const cs = {
   this.interval = setInterval(() => {
     this.currentProgress = this.progressBarElement.getAttribute('style').substring(7, 10)
     this.currentProgress = Number(this.currentProgress);
-    chrome.runtime.sendMessage({ progessBar: this.currentProgress });
+    chrome.runtime.sendMessage({ progessBar: this.currentProgress, list: this.list[this.index], index: this.index });
       if (this.currentProgress.toString() === '100') {
       console.log('song end');
       clearInterval(this.interval);
@@ -61,7 +62,14 @@ const cs = {
       this.playing();
     }
   }, 500);
-  }
+  },
+  // sendNexSong() {
+  //   //send this.list[index]
+  //   chrome.runtime.sendMessage({ status: "new song", list: this.list[this.index], index: this.index }, (res)=>{
+      
+  //   })
+
+  // }
 
 }
 

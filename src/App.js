@@ -23,6 +23,7 @@ function App() {
       setCurrentSong(songs.current[0])
     })
     chrome.runtime.onMessage.addListener((request, sender, reply) => {
+      setCurrentSong(Object.values(request)[1])
       setProgressBar(Object.values(request)[0]);
     })
   }, [])
