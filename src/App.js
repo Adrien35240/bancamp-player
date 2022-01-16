@@ -61,16 +61,37 @@ function App() {
     })
   }
 
-  
+  async function prev(e) {
+    e.preventDefault()
+    const tab = await getTab()
+    console.log('prev')
+    chrome.tabs.sendMessage(tab.id, { status: "prevSong"}, (res) => {
+      if (res.status === 'playing start ...') {
+        console.log(res.status)
+      }
+    })
+  }
+
+  async function next(e) {
+    e.preventDefault()
+    const tab = await getTab()
+    console.log('prev')
+    chrome.tabs.sendMessage(tab.id, { status: "nextSong"}, (res) => {
+      if (res.status === 'playing start ...') {
+        console.log(res.status)
+      }
+    })
+  }
+
+
   return (
     <div className="App">
       <header className="App-header">
         <div className="header-container">
           <div className="controls-player" >
-            <img className='prev-icon' src={prevIcon} alt='play icon' />
+            <img className='prev-icon' src={prevIcon} alt='play icon' onClick={prev}/>
             <img className='play-icon' src={playIcon} alt='play icon' onClick={play}/>
-            <img className='pause-icon' src={pauseIcon} alt='play icon' />
-            <img className='next-icon' src={nextIcon} alt='play icon'/>
+            <img className='next-icon' src={nextIcon} alt='play icon' onClick={next}/>
           </div>
               <div className="song-playing">
             <div> {currentSong.songTitle}</div>
@@ -81,8 +102,8 @@ function App() {
        </header>
       <img className="img-current-song" src={currentSong.songImg} alt="no-img" />
       <div>
-        <div className='playlist-button' >Playlist</div>
-          <div className='playlist-list'><Playlist /></div>
+        {/* <div className='playlist-button' >Playlist</div>
+          <div className='playlist-list'><Playlist /></div> */}
       </div>
           </div>
     );
