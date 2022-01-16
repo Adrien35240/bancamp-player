@@ -11,7 +11,7 @@ import './App.css';
 function App() {
   const songs = useRef(null)
   const index = useRef(null)
-  const tabId = useRef(null)
+  const url = "https://bandcamp.com/cmgriffing"
   const [currentSong, setCurrentSong] = useState([]);
   const [progressBar,setProgressBar] = useState('')
 
@@ -19,7 +19,6 @@ function App() {
     getList().then((data) => {
       songs.current = data.list
       index.current = data.index
-      tabId.current = data.tabId
       setCurrentSong(songs.current[0])
     })
     chrome.runtime.onMessage.addListener((request, sender, reply) => {
@@ -28,9 +27,20 @@ function App() {
     })
   }, [])
 
- function getList() {
+   async function getTab() {
+    const tabs = await chrome.tabs.query({})
+    for (let tab of tabs) {
+      if (tab.url === url) {
+        return tab
+      }
+    }
+  }
+
+
+  async function getList() {
+    const tab = await getTab()
     return new Promise((resolve,reject) => {
-       chrome.runtime.sendMessage({ status: "loading" },(res) => {
+       chrome.runtime.sendMessage({ status: "loadingInit" ,tabId : tab.id},(res) => {
         if (res.status === 'list sending end...') {
               console.log("ext:",res)
               resolve(res) 
@@ -40,11 +50,11 @@ function App() {
     })
  }
   
-  function play(e) {
+ async function play(e) {
     e.preventDefault()
+    const tab = await getTab()
     console.log('play')
-    console.log('ext: tabId',tabId.current)
-    chrome.tabs.sendMessage(tabId.current,{ status: "playing", index:index.current }, (res) => {
+    chrome.tabs.sendMessage(tab.id,{ status: "playing", index:index.current }, (res) => {
       if (res.status === 'playing start ...') {
         console.log(res.status)
       }

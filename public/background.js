@@ -6,17 +6,18 @@ const bg = {
   index:null,
   async init() {
     console.log('background loaded ...')
-    this.tabBandcamp = await this.getTab()
+    //this.tabBandcamp = await this.getTab()
     this.listener()
   },
  async listener() {
     chrome.runtime.onMessage.addListener((req, send, response) => {
-      if (req.status === "loading") {
-                chrome.tabs.sendMessage(this.tabBandcamp.id, { status: "loading" }, (res)=>{ 
+      if (req.status === "loadingInit") {
+        console.log('bg:tabId', req.tabId)
+                chrome.tabs.sendMessage(req.tabId, { status: "loading" }, (res)=>{ 
                   if (res.status === 'list received...') {
                     this.list = res.list
                     this.index = res.index
-                  response({ status: 'list sending end...', list: this.list, index: this.index, tabId : this.tabBandcamp.id })
+                  response({ status: 'list sending end...', list: this.list, index: this.index })
                   }
                 });
         }
