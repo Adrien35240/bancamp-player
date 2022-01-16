@@ -1,34 +1,34 @@
 /* eslint-disable no-undef */
 const bg = {
-  list:[],
-  init() {
+  list: [],
+  url: "https://bandcamp.com/cmgriffing",
+  tabBandcamp: null,
+  async init() {
     console.log('background loaded ...')
+    this.tabBandcamp = await this.getTab()
     this.listener()
   },
-  listener() {
+ async listener() {
     chrome.runtime.onMessage.addListener((req, send, response) => {
       if (req.status === "loading") {
-        //TODO: faire une promesse de la fonction suivante
-        function getList() {
-            return new Promise(function (resolve, reject) {
-              chrome.tabs.query({ active: true, currentWindow: true }, (tabs)=>{
-                chrome.tabs.sendMessage(tabs[0].id, { status: "loading" }, (res)=>{ 
-                if (res.status === 'list received...') {
-                  resolve(res)
+                chrome.tabs.sendMessage(this.tabBandcamp.id, { status: "loading" }, (res)=>{ 
+                  if (res.status === 'list received...') {
+                  this.list = res.list
+                  response({ status: 'list sending end...', list: this.list })
                   }
                 });
-              });
-            return true
-          }) 
         }
-        getList().then((data) => {
-                console.log('2- sw: get list', data.list)
-            response({ status: 'list sending end...', list: data.list })
-        })
+      return true
+      })
+  },
+  async getTab() {
+    const tabs = await chrome.tabs.query({})
+    for (let tab of tabs) {
+      if (tab.url === bg.url) {
+        return tab
       }
-    return true
-    })
-  }
+    }
+  },
 }
 
 bg.init()

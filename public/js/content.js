@@ -5,10 +5,6 @@ const cs = {
     console.log('contentScript loaded')
     this.listener()
   },
-  /**
-  * Send attributs from all songs in DOM to SW
-  * @returns {boolean} 
-  */
   getList() {
     this.list = []
     //get list of element
