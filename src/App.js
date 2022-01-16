@@ -10,15 +10,22 @@ import './App.css';
 
 function App() {
   const songs = useRef(null)
+  const index = useRef(null)
+  const tabId = useRef(null)
   const [currentSong, setCurrentSong] = useState([]);
+  const [progressBar,setProgressBar] = useState('')
 
- useEffect(() => {
+  useEffect(() => {
     getList().then((data) => {
-      songs.current =  data.list
-      console.log('ext: songs :', songs.current)
+      songs.current = data.list
+      index.current = data.index
+      tabId.current = data.tabId
       setCurrentSong(songs.current[0])
     })
-  },[])
+    chrome.runtime.onMessage.addListener((request, sender, reply) => {
+      setProgressBar(Object.values(request)[0]);
+    })
+  }, [])
 
  function getList() {
     return new Promise((resolve,reject) => {
@@ -30,6 +37,17 @@ function App() {
        })
       return true
     })
+ }
+  
+  function play(e) {
+    e.preventDefault()
+    console.log('play')
+    console.log('ext: tabId',tabId.current)
+    chrome.tabs.sendMessage(tabId.current,{ status: "playing", index:index.current }, (res) => {
+      if (res.status === 'playing start ...') {
+        console.log(res.status)
+      }
+    })
   }
 
   
@@ -39,7 +57,7 @@ function App() {
         <div className="header-container">
           <div className="controls-player" >
             <img className='prev-icon' src={prevIcon} alt='play icon' />
-            <img className='play-icon' src={playIcon} alt='play icon' />
+            <img className='play-icon' src={playIcon} alt='play icon' onClick={play}/>
             <img className='pause-icon' src={pauseIcon} alt='play icon' />
             <img className='next-icon' src={nextIcon} alt='play icon'/>
           </div>
@@ -47,7 +65,7 @@ function App() {
             <div> {currentSong.songTitle}</div>
             <div>{currentSong.songArtiste}</div>
           </div>
-            {/* <ProgressBar progress={currentSong.currentProgress} /> */}
+             <ProgressBar progress={progressBar} /> 
           </div>
        </header>
       <img className="img-current-song" src={currentSong.songImg} alt="no-img" />

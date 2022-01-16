@@ -3,6 +3,7 @@ const bg = {
   list: [],
   url: "https://bandcamp.com/cmgriffing",
   tabBandcamp: null,
+  index:null,
   async init() {
     console.log('background loaded ...')
     this.tabBandcamp = await this.getTab()
@@ -13,8 +14,9 @@ const bg = {
       if (req.status === "loading") {
                 chrome.tabs.sendMessage(this.tabBandcamp.id, { status: "loading" }, (res)=>{ 
                   if (res.status === 'list received...') {
-                  this.list = res.list
-                  response({ status: 'list sending end...', list: this.list })
+                    this.list = res.list
+                    this.index = res.index
+                  response({ status: 'list sending end...', list: this.list, index: this.index, tabId : this.tabBandcamp.id })
                   }
                 });
         }
