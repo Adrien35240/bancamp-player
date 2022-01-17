@@ -3,7 +3,7 @@
   "description": "a player collection for bandcamp.com",
   "version": "0.0.0.1",
   "manifest_version": 3,
-  "permissions": ["storage","scripting","tabs"],
+  "permissions": ["storage","scripting","tabs","activeTab"],
   "content_scripts": [{
   "matches": [
     "https://bandcamp.com/*"

@@ -1,6 +1,8 @@
 /* eslint-disable no-undef */
 const cs = {
   list: [],
+  pageType: null,
+  pageStatus:false,
   index: 0,
   interval: null,
   progressBarElement: null,
@@ -21,12 +23,22 @@ const cs = {
       this.list.push({ songTitle, songArtiste, songImg })
     }
   },
+  getColletionPageStatus() {
+    this.pageType = document.title
+    console.log('cs: this pageType',this.pageType)
+    if (this.pageType.includes('Collection')) {
+      this.pageStatus = true
+    } else {
+      this.pageStatus = false
+    }
+  },
   listener() {
     chrome.runtime.onMessage.addListener(
       (req, send, res) => {
         if (req.status === "loading") {
+          this.getColletionPageStatus()
           this.getList()
-          res({ status: "list received...", list: this.list , index: this.index })
+          res({ status: "list received...", list: this.list , index: this.index, pageStatus:this.pageStatus })
         } else {
           res({ status: "error sending list to SW" })
         }
@@ -74,7 +86,6 @@ const cs = {
     this.currentProgress = Number(this.currentProgress);
     chrome.runtime.sendMessage({ progessBar: this.currentProgress, list: this.list[this.index], index: this.index });
       if (this.currentProgress.toString() === '100') {
-      console.log('song end');
       clearInterval(this.interval);
       this.index += 1;
       this.playing();

@@ -8,8 +8,7 @@ npm install && npm run build
 [Doc google](https://support.google.com/chrome/a/answer/2714278?hl=fr#:~:text=Acc%C3%A9dez%20%C3%A0%20chrome%3A%2F%2Fextensions,application%20ou%20de%20l'extension.)
 ## How To use
 - Install extension in developper mode.
-- :warning: it only works for this :point_down: collection at the moment.
-- go to [bandcamp.com/cmgriffing](https://bandcamp.com/cmgriffing) 
+- go to [bandcamp.com/cmgriffing](https://bandcamp.com/cmgriffing) for testing
 - and press play button :musical_note:
 # Credits
 - contributor: Adrien35240

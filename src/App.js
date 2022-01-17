@@ -11,7 +11,8 @@ import './App.css';
 function App() {
   const songs = useRef(null)
   const index = useRef(null)
-  const url = "https://bandcamp.com/cmgriffing"
+  const pageStatus = useRef(false)
+  const url = "https://bandcamp.com/"
   const [currentSong, setCurrentSong] = useState([]);
   const [progressBar,setProgressBar] = useState('')
 
@@ -19,6 +20,7 @@ function App() {
     getList().then((data) => {
       songs.current = data.list
       index.current = data.index
+      pageStatus.current = data.pageStatus
       setCurrentSong(songs.current[0])
     })
     chrome.runtime.onMessage.addListener((request, sender, reply) => {
@@ -27,10 +29,11 @@ function App() {
     })
   }, [])
 
-   async function getTab() {
-    const tabs = await chrome.tabs.query({})
-    for (let tab of tabs) {
-      if (tab.url === url) {
+  async function getTab() {
+      const tabs = await chrome.tabs.query({})
+      for (let tab of tabs) {
+      //TODO: improve tab detection(here return first collection tab find)
+      if (tab.url.includes(url) /*&& pageStatus.current===true*/) {
         return tab
       }
     }
