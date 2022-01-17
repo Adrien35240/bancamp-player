@@ -8,8 +8,13 @@
 }
 .App-header__title{
   margin: .4rem;
+  margin-bottom: .1rem;
   font-size: 1.05rem;
   font-weight: bold;
+}
+.App-header__version{
+  text-align: right;
+  font-size: .6rem;
 }
 .header-container{
   display:flex;

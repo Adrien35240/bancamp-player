@@ -14,7 +14,8 @@ function App() {
   const pageStatus = useRef(false)
   const url = "https://bandcamp.com/"
   const [currentSong, setCurrentSong] = useState([]);
-  const [progressBar,setProgressBar] = useState('')
+  const [progressBar, setProgressBar] = useState('')
+  const playPauseIcon = "playIcon"
 
   useEffect(() => {
     getList().then((data) => {
@@ -54,7 +55,6 @@ function App() {
   
  async function play(e) {
    e.preventDefault()
-   //TODO: toggle le bouton play/pause
     const tab = await getTab()
     console.log('play')
     chrome.tabs.sendMessage(tab.id,{ status: "playing", index:index.current }, (res) => {
@@ -89,7 +89,10 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <div className="App-header__title">bandcamp-player</div>
+        <div>
+          <div className="App-header__title">bandcamp-player</div>
+          <div className="App-header__version">beta-v0.3</div>
+        </div>
         <div className="header-container">
           <div className="controls-player" >
             <img className='prev-icon' src={prevIcon} alt='play icon' onClick={prev}/>
