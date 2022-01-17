@@ -1,8 +1,6 @@
 /* eslint-disable no-undef */
 const bg = {
   list: [],
-  url: "https://bandcamp.com/cmgriffing",
-  tabBandcamp: null,
   pageStatus:false,
   index:null,
   async init() {
