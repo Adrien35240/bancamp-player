@@ -8,7 +8,7 @@
 npm install && npm run build
 ```
 ### Install extension in chrome
-[Doc google](https://support.google.com/chrome/a/answer/2714278?hl=fr#:~:text=Acc%C3%A9dez%20%C3%A0%20chrome%3A%2F%2Fextensions,application%20ou%20de%20l'extension.)
+- In Chrome, open the Chrome browser extension page by clicking Additional Tools > Extensions. Check the Developer Mode box. Click the Load Unpackaged Extension button. Select the 'build' folder and click OK to install the extension.
 ## How To use
 - Install extension in developper mode.
 - go to [bandcamp.com/cmgriffing](https://bandcamp.com/cmgriffing) for testing
