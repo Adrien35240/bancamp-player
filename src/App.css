@@ -6,6 +6,11 @@
   align-item:center;
   background:linear-gradient(135deg, #816FF7 0%, #30D4BB 100%);
 }
+.App-header__title{
+  margin: .4rem;
+  font-size: 1.05rem;
+  font-weight: bold;
+}
 .header-container{
   display:flex;
   flex-direction:column
@@ -16,17 +21,21 @@
   font-size:6rem;
 }
 .song-playing{
+  margin:.2rem;
 display:flex;
 flex-direction:column
 }
-.App-header:hover{
-  background:linear-gradient(135deg, #30D4BB 0%,#816FF7  100%)
+.song-playing__title{
+font-weight: bold;
 }
+
 .img-current-song{
   width:200px;
   height:200px
 }
 .play-icon{
+  margin-left: 2rem;
+  margin-right: 2rem;
   width:30px;
   height:30px
 }

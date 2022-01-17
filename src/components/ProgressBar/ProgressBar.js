@@ -1,12 +1,4 @@
-/* eslint-disable react/style-prop-object */
-/* eslint-disable no-template-curly-in-string */
-/* eslint-disable import/no-cycle */
-/* eslint-disable no-unused-vars */
-/* eslint-disable import/extensions */
-/* eslint-disable no-undef */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/jsx-filename-extension */
+
 import React from 'react';
 
 function ProgressBar({ progress }) {
@@ -30,7 +22,7 @@ if(!progress){
   const labelStyles = {
     color:'white',
     padding: '2px',
-    color: 'white',
+    color: '#816FF7',
     fontWeight: 'bold'
   }
 

@@ -86,6 +86,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <div className="App-header__title">bandcamp-player</div>
         <div className="header-container">
           <div className="controls-player" >
             <img className='prev-icon' src={prevIcon} alt='play icon' onClick={prev}/>
@@ -93,13 +94,13 @@ function App() {
             <img className='next-icon' src={nextIcon} alt='play icon' onClick={next}/>
           </div>
               <div className="song-playing">
-            <div> {currentSong.songTitle}</div>
-            <div>{currentSong.songArtiste}</div>
+            <div className='song-playing__title'> {currentSong.songTitle}</div>
+            <div className='song-playing__artiste'>{currentSong.songArtiste}</div>
           </div>
              <ProgressBar progress={progressBar} /> 
           </div>
        </header>
-      <img className="img-current-song" src={currentSong.songImg} alt="no-img" />
+      <img className="img-current-song" src={currentSong.songImg} alt="no-img => refresh bandcamp page & close/open player" />
       <div>
         {/* <div className='playlist-button' >Playlist</div>
           <div className='playlist-list'><Playlist /></div> */}
