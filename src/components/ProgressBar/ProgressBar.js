@@ -1,10 +1,12 @@
 
 import React from 'react';
 
-function ProgressBar({ progress }) {
+function ProgressBar({ progress ,timeElasped,timeDuration}) {
 
 if(!progress){
   progress = 0
+  timeElasped = 0
+  timeDuration = 0
 }
   const containerStyles = {
     height: '14px',
@@ -20,7 +22,6 @@ if(!progress){
   }
 
   const labelStyles = {
-    color:'white',
     padding: '2px',
     color: '#816FF7',
     fontWeight: 'bold'
@@ -29,7 +30,7 @@ if(!progress){
   return (
     <div style={containerStyles}>
       <div style={fillerStyles}>
-        <span style={labelStyles}>{`${progress}%`}</span>
+        <span style={labelStyles}>{`${timeElasped}/${timeDuration}`}</span>
       </div>
     </div>
   );

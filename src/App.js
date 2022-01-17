@@ -4,7 +4,6 @@ import Playlist from './components/Playlist/Playlist'
 import ProgressBar from './components/ProgressBar/ProgressBar.js';
 import prevIcon from './assets/icons/prevIcon.png'
 import playIcon from './assets/icons/playIcon.png'
-import pauseIcon from './assets/icons/pauseIcon.png'
 import nextIcon from './assets/icons/nextIcon.png'
 import './App.css';
 
@@ -15,7 +14,8 @@ function App() {
   const url = "https://bandcamp.com/"
   const [currentSong, setCurrentSong] = useState([]);
   const [progressBar, setProgressBar] = useState('')
-  const playPauseIcon = "playIcon"
+  const [timeElasped, setTimeElasped] = useState('')
+  const [timeDuration, setTimeDuration] = useState('')
 
   useEffect(() => {
     getList().then((data) => {
@@ -25,8 +25,11 @@ function App() {
       setCurrentSong(songs.current[0])
     })
     chrome.runtime.onMessage.addListener((request, sender, reply) => {
-      setCurrentSong(Object.values(request)[1])
+      console.log('ext:request', request)
       setProgressBar(Object.values(request)[0]);
+      setCurrentSong(Object.values(request)[1])
+      setTimeElasped(Object.values(request)[3])
+      setTimeDuration(Object.values(request)[4])
     })
   }, [])
 
@@ -103,7 +106,7 @@ function App() {
             <div className='song-playing__title'> {currentSong.songTitle}</div>
             <div className='song-playing__artiste'>{currentSong.songArtiste}</div>
           </div>
-             <ProgressBar progress={progressBar} /> 
+          <ProgressBar progress={progressBar} timeElasped={timeElasped} timeDuration={timeDuration} /> 
           </div>
        </header>
       <img className="img-current-song" src={currentSong.songImg} alt="no-img => refresh bandcamp page & close/open player" />

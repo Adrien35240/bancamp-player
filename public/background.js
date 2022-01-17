@@ -7,9 +7,11 @@ const bg = {
     console.log('background loaded ...')
     this.listener()
   },
- async listener() {
+  async listener() {
+   //request from extension
     chrome.runtime.onMessage.addListener((req, send, response) => {
       if (req.status === "loadingInit") {
+        //send to contentScript
                 chrome.tabs.sendMessage(req.tabId, { status: "loading" }, (res)=>{ 
                   if (res.status === 'list received...') {
                     this.list = res.list

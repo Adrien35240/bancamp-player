@@ -7,7 +7,8 @@ const cs = {
   interval: null,
   progressBarElement: null,
   currentProgress: 0,
-  listElement : null,
+  listElement: null,
+  timeElasped: null,
   init() {
     console.log('contentScript loaded')
     this.listener()
@@ -33,6 +34,7 @@ const cs = {
     }
   },
   listener() {
+    //request from background
     chrome.runtime.onMessage.addListener(
       (req, send, res) => {
         if (req.status === "loading") {
@@ -80,11 +82,19 @@ const cs = {
     this.progressBar()
   },
   progressBar() {
-  this.progressBarElement = document.querySelector('.progress');
+    //progres
+    this.progressBarElement = document.querySelector('.progress');
+    //Time
+    const posDur = document.querySelector('.pos-dur')
+    console.log('cs: posdur ',posDur)
+    //duration
   this.interval = setInterval(() => {
     this.currentProgress = this.progressBarElement.getAttribute('style').substring(7, 10)
     this.currentProgress = Number(this.currentProgress);
-    chrome.runtime.sendMessage({ progessBar: this.currentProgress, list: this.list[this.index], index: this.index });
+    this.timeElasped = posDur.children[0].innerText
+    this.timeDuration = posDur.children[1].innerText
+    //Send to extension
+    chrome.runtime.sendMessage({ progessBar: this.currentProgress, list: this.list[this.index], index: this.index ,timeElasped:this.timeElasped,timeDuration:this.timeDuration});
       if (this.currentProgress.toString() === '100') {
       clearInterval(this.interval);
       this.index += 1;
