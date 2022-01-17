@@ -1,5 +1,5 @@
 # :construction: Bandcamp-player :construction:
-## A collection player for [bandcamp.com](https://bandcamp.com/)
+## A collection player for [bandcamp.com](https://bandcamp.com/) made with ReactJs.
 
 <img width="196" alt="Capture d’écran 2022-01-17 à 14 33 22" src="https://user-images.githubusercontent.com/73515932/149778290-d45a6e04-6eac-46f6-9fc9-942c705939f2.png">
 
